@@ -85,10 +85,7 @@
         name: "top-info",
         data() {
             return {
-                lenders: 20,
-                customers: 34567,
-                applications: 45674,
-                approved: 34567
+                //
             }
         }
     }

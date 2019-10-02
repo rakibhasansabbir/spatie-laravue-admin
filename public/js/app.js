@@ -2056,11 +2056,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "top-info",
   data: function data() {
-    return {
-      lenders: 20,
-      customers: 34567,
-      applications: 45674,
-      approved: 34567
+    return {//
     };
   }
 });
@@ -50245,8 +50241,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('admin-dashboard', __webpac
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/rakib/Projects/ChatRain/new/chatrain/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/rakib/Projects/ChatRain/new/chatrain/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/rakib/Documents/chatrain/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/rakib/Documents/chatrain/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
