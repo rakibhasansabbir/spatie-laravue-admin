@@ -6,7 +6,7 @@
     </div>
 @endsection
 @push('js')
-    <script>
+    {{-- <script>
         window.currency = "{{__('currency.sign')}}";
         @auth
             window.authId = "{{ auth()->id() }}";
@@ -14,6 +14,6 @@
                 window.lenderId = "{{ auth()->user()->admin->id  }}";
             @endrole
         @endauth
-    </script>
+    </script> --}}
 @endpush
 
