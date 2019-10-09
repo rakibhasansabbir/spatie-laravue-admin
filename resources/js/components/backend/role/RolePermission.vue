@@ -8,14 +8,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(customer, index) in customers">
+                <tr v-for="(role, index) in roles">
                     <td>{{ parseInt(index) + 1 }}</td>
-                    <td><a class="text-primary" :href="'customers/' + customer.id">{{ customer.full_name }}</a></td>
-                    <td>{{ customer.user ? customer.user.email : '-' }}</td>
-                    <td>{{ customer.gender }}</td>
-                    <td>{{ customer.readable_dob }}</td>
-                    <td class="text-center">{{ customer.applications_count }}</td>
-                    <td>
+                    <td><a class="text-primary" :href="'role/' + role.id">{{ role.name }}</a></td>
+                    <td>{{ role.guard_name ? role.guard_name : '-' }}</td>
+                    <td></td>
+                    <!-- <td>
                         <div class="custom-control custom-switch">
                             <input type="checkbox"
                                    :checked="Boolean(customer.user.is_active)"
@@ -24,15 +22,15 @@
                             <label class="custom-control-label" :for="'customerStatus'+customer.id"
                                    v-text="Boolean(customer.user.is_active) ? 'Active':'Off'"></label>
                         </div>
-                    </td>
+                    </td> -->
                     <td>
-                        <a :href="webRoute + '/' + customer.id" class="mL-5 mR-5 text-primary"
+                        <a :href="webRoute + '/' + role.id" class="mL-5 mR-5 text-primary"
                            data-toggle="tooltip"
                            title="Detail">
                             <i class="ti-eye"></i></a>
                         <a href="#" class="mL-5 mR-5 text-danger"
                            data-toggle="tooltip"
-                           @click.prevent="deleteCustomer(customer)"
+                           @click.prevent="deleteRole(role)"
                            title="Delete">
                             <i class="ti-trash"></i></a>
                     </td>
@@ -47,13 +45,35 @@
 </template>
 
 <script>
+import client from '../../../client'
+import alertify from 'alertifyjs'
 import {RolePermissions} from "../../../static/config/formColumn"
 export default {
     data() {
         return {
             loader: false,
             columns: RolePermissions.columns,
-            customers: [],
+            roles: [],
+            webRoute: webRoute
+        }
+    },
+    mounted(){
+        this.fetchRolePermissions()
+
+    },
+    methods:{
+        fetchRolePermissions() {
+                client.get(route)
+                    .then(response => {
+                        if (response.status === 200) {
+                            this.loader = false;
+                            this.roles = response.data
+                            console.debug("role permissions : ", this.roles)
+                        }
+                    })
+            },
+        deleteRole(){
+            console.debug("call delete")
         }
     },
 

@@ -58,11 +58,11 @@ class RouteServiceProvider extends ServiceProvider
 
     public function mapBackendRoutes()
     {
-        Route::middleware('web', 'auth', 'hasPermission')
+        Route::middleware('web', 'auth')
             ->namespace($this->namespace . "\Backend")
             ->group(base_path('routes/backend/web.php'));
 
-        Route::middleware('web', 'auth', 'hasPermission')
+        Route::middleware('web', 'auth')
             ->prefix('admin/api')
             ->namespace($this->namespace . "\Backend")
             ->group(base_path('routes/backend/api.php'));

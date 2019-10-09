@@ -1,6 +1,6 @@
 export const RolePermissions = {
     columns: [
-        'Sl', 'Name','Permissions', 'Action'
+        'Sl', 'Name','Guard name','Permissions', 'Action'
     ]
 };
 export const lenders = {

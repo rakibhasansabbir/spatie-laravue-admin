@@ -10,34 +10,17 @@ use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
-    private $role;
+    private $repository;
 
-    public function __construct(RoleRepository $role){
-        $this->role = $role;
+    public function __construct(RoleRepository $repository){
+        $this->repository = $repository;
     }
 
-    public function index(Request $request){
-        // $role = Role::create(['name' => 'admin']);
-        // $permission = Permission::create(['name' => 'delete_admin']);
-        // $role = Role::findById(1);
-        // return $permission = Permission::findById(1);
-        // return Role::with('permissions')->get();
-        // return  $request;
-        return $this->role->index($request);
+    public function index(){
+        return view('backend.role.index');
     }
-    public function create(){
-        return $this->role->create();
+    public function indexApi(){
+        return response()->json($this->repository->getAll());
     }
-    public function store(Request $request){
-        return $this->role->store($request);
-    }
-    public function edit($id){
-        return $this->role->edit($id);
-    }
-    public function update(Request $request,$id){
-        return $this->role->update($request,$id);
-    }
-    public function delete($id){
-        return $this->role->delete($id);
-    }
+
 }
