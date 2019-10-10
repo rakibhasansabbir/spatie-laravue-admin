@@ -50,6 +50,10 @@
                 <ul class="dropdown-menu">
                     <li>
                         <a class='sidebar-link {{ request()->is('admins') ? 'highlight' : '' }}'
+                            href="/role">Roles</a>
+                    </li>
+                    <li>
+                        <a class='sidebar-link {{ request()->is('admins') ? 'highlight' : '' }}'
                             href="#">Admins</a>
                     </li>
                     <li>

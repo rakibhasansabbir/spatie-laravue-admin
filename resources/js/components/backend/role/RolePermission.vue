@@ -12,7 +12,11 @@
                     <td>{{ parseInt(index) + 1 }}</td>
                     <td><a class="text-primary" :href="'role/' + role.id">{{ role.name }}</a></td>
                     <td>{{ role.guard_name ? role.guard_name : '-' }}</td>
-                    <td></td>
+                    <td>
+                        <template v-show="role.permissions" v-for="(permission, index) in role.permissions">
+                            <span class="badge badge-pill badge-info">{{permission.name}}</span>
+                        </template>
+                    </td>
                     <!-- <td>
                         <div class="custom-control custom-switch">
                             <input type="checkbox"
@@ -24,10 +28,10 @@
                         </div>
                     </td> -->
                     <td>
-                        <a :href="webRoute + '/' + role.id" class="mL-5 mR-5 text-primary"
+                        <!-- <a :href="webRoute + '/' + role.id" class="mL-5 mR-5 text-primary"
                            data-toggle="tooltip"
                            title="Detail">
-                            <i class="ti-eye"></i></a>
+                            <i class="ti-eye"></i></a> -->
                         <a href="#" class="mL-5 mR-5 text-danger"
                            data-toggle="tooltip"
                            @click.prevent="deleteRole(role)"
@@ -41,24 +45,33 @@
         <!-- <template v-else>
             <Loader></Loader>
         </template> -->
+                <role-form :role="editValue"
+            method="put"
+            v-show="createModal"></role-form>
     </div>
 </template>
 
 <script>
-import client from '../../../client'
+import client from '@/client'
 import alertify from 'alertifyjs'
-import {RolePermissions} from "../../../static/config/formColumn"
+import RoleForm from './Form'
+import {RolePermissions} from "@/static/config/formColumn"
+import {EventBus} from "@/event-bus";
 export default {
     data() {
         return {
             loader: false,
             columns: RolePermissions.columns,
             roles: [],
-            webRoute: webRoute
+            webRoute: webRoute,
+            createModal: false,
+            editValue: {}
         }
     },
     mounted(){
         this.fetchRolePermissions()
+        EventBus.$on('modalClose', () => { this.createModal = false });
+        EventBus.$on('refresh', () => { this.fetchRolePermissions() });
 
     },
     methods:{

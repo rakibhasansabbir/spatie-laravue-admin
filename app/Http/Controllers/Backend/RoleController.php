@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 use App\User;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Backend\Role\RoleRequest;
 use Illuminate\Http\Request;
 use App\Repository\Backend\RoleRepository;
 use Spatie\Permission\Models\Role;
@@ -21,6 +22,15 @@ class RoleController extends Controller
     }
     public function indexApi(){
         return response()->json($this->repository->getAll());
+    }
+    public function store(RoleRequest $request){
+        if ($role = $this->repository->store($request)) {
+            return response()->json([
+                'message' => 'Role created successfully',
+                'data' => $role
+            ]);
+        }
+        return response()->json(['error' => 'Something went wrong'], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 
 }

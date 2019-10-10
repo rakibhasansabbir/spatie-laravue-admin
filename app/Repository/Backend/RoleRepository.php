@@ -24,6 +24,15 @@ class RoleRepository{
         return $this->model()::with('permissions')->get();
     }
 
+    public function store($request)
+    {
+        $role = $this->model()::create([
+            'name' => $request->name,
+        ]);
+        // auth()->user()->assignRole($role);
+        return $role;
+    }
+
 
 
 }

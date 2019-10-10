@@ -1,8 +1,14 @@
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+// // Fonts
+// @import url('https://fonts.googleapis.com/css?family=Nunito');
 
-// Variables
+// // Variables
+// @import 'variables';
+
+// // Bootstrap
+// @import '~bootstrap/scss/bootstrap';
+
 @import 'variables';
-
-// Bootstrap
 @import '~bootstrap/scss/bootstrap';
+@import '~alertifyjs/build/css/alertify.css';
+@import '~alertifyjs/build/css/themes/default.css';
+@import "style";
