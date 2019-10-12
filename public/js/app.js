@@ -5919,6 +5919,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -5935,7 +5936,7 @@ __webpack_require__.r(__webpack_exports__);
       columns: _static_config_formColumn__WEBPACK_IMPORTED_MODULE_3__["RolePermissions"].columns,
       roles: [],
       webRoute: webRoute,
-      createModal: false,
+      showModal: false,
       editValue: {}
     };
   },
@@ -5944,7 +5945,7 @@ __webpack_require__.r(__webpack_exports__);
 
     this.fetchRolePermissions();
     _event_bus__WEBPACK_IMPORTED_MODULE_4__["EventBus"].$on('modalClose', function () {
-      _this.createModal = false;
+      _this.showModal = false;
     });
     _event_bus__WEBPACK_IMPORTED_MODULE_4__["EventBus"].$on('refresh', function () {
       _this.fetchRolePermissions();
@@ -5965,7 +5966,6 @@ __webpack_require__.r(__webpack_exports__);
     deleteRole: function deleteRole(role) {
       var _this3 = this;
 
-      console.debug("role details:", role);
       alertifyjs__WEBPACK_IMPORTED_MODULE_1___default.a.confirm('Role delete', 'Are you sure?', function () {
         _client__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"](route + '/' + role.id).then(function (response) {
           alertifyjs__WEBPACK_IMPORTED_MODULE_1___default.a.success(response.data.message);
@@ -5973,6 +5973,11 @@ __webpack_require__.r(__webpack_exports__);
           _this3.fetchRolePermissions();
         });
       }, function () {});
+    },
+    showEditModal: function showEditModal(role) {
+      this.editValue = role;
+      this.showModal = true;
+      this.method = 'put';
     }
   }
 });
@@ -6019,14 +6024,14 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      createModal: false
+      showModal: false
     };
   },
   mounted: function mounted() {
     var _this = this;
 
     _event_bus__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$on('modalClose', function () {
-      _this.createModal = false;
+      _this.showModal = false;
     });
   },
   beforeDestroy: function beforeDestroy() {
@@ -53862,6 +53867,25 @@ var render = function() {
                       _c(
                         "a",
                         {
+                          staticClass: "mL-5 mR-5 text-primary",
+                          attrs: {
+                            href: "#",
+                            "data-toggle": "tooltip",
+                            title: "Edit"
+                          },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.showEditModal(role)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "ti-pencil-alt" })]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
                           staticClass: "mL-5 mR-5 text-danger",
                           attrs: {
                             href: "#",
@@ -53891,8 +53915,8 @@ var render = function() {
           {
             name: "show",
             rawName: "v-show",
-            value: _vm.createModal,
-            expression: "createModal"
+            value: _vm.showModal,
+            expression: "showModal"
           }
         ],
         attrs: { role: _vm.editValue, method: "put" }
@@ -53939,7 +53963,7 @@ var render = function() {
                 attrs: { type: "button" },
                 on: {
                   click: function($event) {
-                    _vm.createModal = true
+                    _vm.showModal = true
                   }
                 }
               },
@@ -53956,8 +53980,8 @@ var render = function() {
           {
             name: "show",
             rawName: "v-show",
-            value: _vm.createModal,
-            expression: "createModal"
+            value: _vm.showModal,
+            expression: "showModal"
           }
         ]
       })

@@ -28,10 +28,11 @@
                         </div>
                     </td> -->
                     <td>
-                        <!-- <a :href="webRoute + '/' + role.id" class="mL-5 mR-5 text-primary"
-                           data-toggle="tooltip"
-                           title="Detail">
-                            <i class="ti-eye"></i></a> -->
+                        <a href="#" class="mL-5 mR-5 text-primary"
+                               @click.prevent="showEditModal(role)"
+                               data-toggle="tooltip"
+                               title="Edit">
+                                <i class="ti-pencil-alt"></i></a>
                         <a href="#" class="mL-5 mR-5 text-danger"
                            data-toggle="tooltip"
                            @click.prevent="deleteRole(role)"
@@ -47,7 +48,7 @@
         </template> -->
                 <role-form :role="editValue"
             method="put"
-            v-show="createModal"></role-form>
+            v-show="showModal"></role-form>
     </div>
 </template>
 
@@ -68,13 +69,13 @@ export default {
             columns: RolePermissions.columns,
             roles: [],
             webRoute: webRoute,
-            createModal: false,
+            showModal: false,
             editValue: {}
         }
     },
     mounted(){
         this.fetchRolePermissions()
-        EventBus.$on('modalClose', () => { this.createModal = false });
+        EventBus.$on('modalClose', () => { this.showModal = false });
         EventBus.$on('refresh', () => { this.fetchRolePermissions() });
 
     },
@@ -90,7 +91,6 @@ export default {
                     })
             },
         deleteRole(role){
-            console.debug("role details:", role)
              alertify.confirm('Role delete', 'Are you sure?', () => {
                     client.delete(route + '/' + role.id)
                         .then(response => {
@@ -98,7 +98,12 @@ export default {
                             this.fetchRolePermissions();
                         })
             }, () => {});
-        }
+        },
+        showEditModal(role) {
+            this.editValue = role
+            this.showModal = true
+            this.method = 'put'
+        },
     },
 
 }

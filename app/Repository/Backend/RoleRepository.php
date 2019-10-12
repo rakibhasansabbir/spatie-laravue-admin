@@ -33,6 +33,12 @@ class RoleRepository{
         return $role;
     }
 
+    public function update($id, $request)
+    {
+        $role = $this->model()::findOrFail($id);
+        return $role->update($request->except('permissions'));
+    }
+
     public function delete($id)
     {
         $role = $this->model()::findOrFail($id);

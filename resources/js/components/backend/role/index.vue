@@ -6,12 +6,12 @@
             </h4>
             <div class="col-sm-6">
                 <div class="btn-group pull-right">
-                    <button  type="button" class="btn btn-primary" @click="createModal = true"> New Role</button>
+                    <button  type="button" class="btn btn-primary" @click="showModal = true"> New Role</button>
                 </div>
             </div>
         </div>
         <role-permission></role-permission>
-        <role-form v-show="createModal"></role-form>
+        <role-form v-show="showModal"></role-form>
     </div>
 </template>
 
@@ -26,11 +26,11 @@ export default {
         },
         data() {
             return {
-                createModal: false
+                showModal: false
             }
         },
         mounted() {
-            EventBus.$on('modalClose', () => { this.createModal = false });
+            EventBus.$on('modalClose', () => { this.showModal = false });
         },
         beforeDestroy() {
             EventBus.$off('modalClose')

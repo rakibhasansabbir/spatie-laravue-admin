@@ -1,13 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
-use App\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\Role\RoleRequest;
-use Illuminate\Http\Request;
 use App\Repository\Backend\RoleRepository;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
+use Illuminate\Http\Response;
 
 class RoleController extends Controller
 {
@@ -28,7 +25,18 @@ class RoleController extends Controller
             return response()->json([
                 'message' => 'Role created successfully',
                 'data' => $role
-            ]);
+            ], Response::HTTP_OK);
+        }
+        return response()->json(['error' => 'Something went wrong'], Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+    public function update($id, RoleRequest $request)
+    {
+
+        if ($role = $this->repository->update($id, $request)) {
+            return response()->json([
+                'message' => 'Role update successfully',
+                'data' => $role
+            ], Response::HTTP_OK);
         }
         return response()->json(['error' => 'Something went wrong'], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
@@ -37,7 +45,7 @@ class RoleController extends Controller
         if ($this->repository->delete($id)) {
             return response()->json([
                 'message' => 'Role deleted successfully',
-            ]);
+            ], Response::HTTP_OK);
         }
         return response()->json(['error' => 'Something went wrong'], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
