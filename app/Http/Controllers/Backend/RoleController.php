@@ -32,5 +32,14 @@ class RoleController extends Controller
         }
         return response()->json(['error' => 'Something went wrong'], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
+    public function destroy($id)
+    {
+        if ($this->repository->delete($id)) {
+            return response()->json([
+                'message' => 'Role deleted successfully',
+            ]);
+        }
+        return response()->json(['error' => 'Something went wrong'], Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
 
 }

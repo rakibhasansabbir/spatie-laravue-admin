@@ -58,6 +58,10 @@ import RoleForm from './Form'
 import {RolePermissions} from "@/static/config/formColumn"
 import {EventBus} from "@/event-bus";
 export default {
+    name: "role-permission",
+        components: {
+            RoleForm
+    },
     data() {
         return {
             loader: false,
@@ -85,8 +89,15 @@ export default {
                         }
                     })
             },
-        deleteRole(){
-            console.debug("call delete")
+        deleteRole(role){
+            console.debug("role details:", role)
+             alertify.confirm('Role delete', 'Are you sure?', () => {
+                    client.delete(route + '/' + role.id)
+                        .then(response => {
+                            alertify.success(response.data.message)
+                            this.fetchRolePermissions();
+                        })
+            }, () => {});
         }
     },
 

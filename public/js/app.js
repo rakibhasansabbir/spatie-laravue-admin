@@ -5925,6 +5925,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  name: "role-permission",
+  components: {
+    RoleForm: _Form__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
   data: function data() {
     return {
       loader: false,
@@ -5958,8 +5962,17 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    deleteRole: function deleteRole() {
-      console.debug("call delete");
+    deleteRole: function deleteRole(role) {
+      var _this3 = this;
+
+      console.debug("role details:", role);
+      alertifyjs__WEBPACK_IMPORTED_MODULE_1___default.a.confirm('Role delete', 'Are you sure?', function () {
+        _client__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"](route + '/' + role.id).then(function (response) {
+          alertifyjs__WEBPACK_IMPORTED_MODULE_1___default.a.success(response.data.message);
+
+          _this3.fetchRolePermissions();
+        });
+      }, function () {});
     }
   }
 });

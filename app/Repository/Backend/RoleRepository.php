@@ -33,6 +33,16 @@ class RoleRepository{
         return $role;
     }
 
+    public function delete($id)
+    {
+        $role = $this->model()::findOrFail($id);
+
+        return DB::transaction(function () use ($role) {
+            $role->delete();
+            return true;
+        });
+    }
+
 
 
 }
