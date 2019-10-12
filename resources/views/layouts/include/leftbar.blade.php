@@ -54,6 +54,10 @@
                     </li>
                     <li>
                         <a class='sidebar-link {{ request()->is('admins') ? 'highlight' : '' }}'
+                            href="/permission">Permissions</a>
+                    </li>
+                    <li>
+                        <a class='sidebar-link {{ request()->is('admins') ? 'highlight' : '' }}'
                             href="#">Admins</a>
                     </li>
                     <li>
