@@ -31,14 +31,13 @@ class RoleController extends Controller
     }
     public function update($id, RoleRequest $request)
     {
-
-        if ($role = $this->repository->update($id, $request)) {
-            return response()->json([
-                'message' => 'Role update successfully',
-                'data' => $role
-            ], Response::HTTP_OK);
-        }
-        return response()->json(['error' => 'Something went wrong'], Response::HTTP_INTERNAL_SERVER_ERROR);
+       if ($role = $this->repository->update($id, $request)) {
+           return response()->json([
+               'message' => 'Role permissions update successfully',
+               'data' => $role
+           ], Response::HTTP_OK);
+       }
+       return response()->json(['error' => 'Something went wrong'], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
     public function destroy($id)
     {

@@ -7,6 +7,7 @@
     <script>
         try {
             window.route = "{{ route('backend.api.role.index')  }}"
+            window.permissionRoute = "{{ route('backend.api.permission.index')  }}"
             window.webRoute = "{{ route('backend.role.index')  }}"
         } catch (e) {
             console.warning('Something happened to set route')

@@ -1,6 +1,6 @@
 <template>
     <modal :customClass="'sm'">
-        <template  v-slot:header>
+        <template v-slot:header>
             <h4 class="col-sm-6 c-grey-900 p-20">
                 <i class="c-blue-500 ti-user mR-15"></i>
                 Role form
@@ -21,7 +21,23 @@
                            v-model="role.name"
                            class="form-control" placeholder="Name">
                     <div v-if="errors.first('name')"
-                         class="invalid-feedback">{{ errors.first('name') }}</div>
+                         class="invalid-feedback">{{ errors.first('name') }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Søger</label>
+                    <multiselect
+                        v-model="role.permissions"
+                        :options="permissions"
+                        :multiple="true"
+                        :close-on-select="true"
+                        placeholder="Pick some"
+                        label="name"
+                        track-by="name">
+                    </multiselect>
+                    <div v-if="errors.first('permissions')"
+                         class="invalid-feedback">{{ errors.first('permissions') }}
+                    </div>
                 </div>
                 <hr>
                 <div class="form-group">
@@ -41,14 +57,14 @@
     import alertify from 'alertifyjs'
     import client from '@/client'
     import {EventBus} from "@/event-bus"
+
     export default {
         name: "role-form",
         components: {
             Modal
         },
         data() {
-            return {
-            }
+            return {}
         },
         props: {
             method: {
@@ -59,11 +75,25 @@
             role: {
                 type: Object,
                 required: false,
-                default: () => { return {}}
+                default: () => {
+                    return {}
+                }
+            },
+            permissions: {
+                type: Array,
+                required: false,
+                default: () => {
+                    return {}
+                }
             }
         },
+        mounted() {
+            $(function () {
+                $('.selectpicker').selectpicker();
+            });
+        },
         methods: {
-            formSubmit(){
+            formSubmit() {
                 if (this.method && this.method === 'put')
                     return this.editRole()
                 return this.storeRole()
@@ -85,6 +115,7 @@
                 });
             },
             editRole() {
+                console.debug("called edit :", this.role)
                 this.$validator.validateAll().then((result) => {
                     if (result) {
                         client.put(route + '/' + this.role.id, this.role)
@@ -106,7 +137,23 @@
         }
     }
 </script>
-
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
+    body {
+        background: #e8cbc0;
+        background: -webkit-linear-gradient(to right, #e8cbc0, #636fa4);
+        background: linear-gradient(to right, #e8cbc0, #636fa4);
+        min-height: 100vh;
+    }
 
+    .bootstrap-select .bs-ok-default::after {
+        width: 0.3em;
+        height: 0.6em;
+        border-width: 0 0.1em 0.1em 0;
+        transform: rotate(45deg) translateY(0.5rem);
+    }
+
+    .btn.dropdown-toggle:focus {
+        outline: none !important;
+    }
 </style>

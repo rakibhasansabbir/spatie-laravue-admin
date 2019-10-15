@@ -6,7 +6,10 @@
             </h4>
             <div class="col-sm-6">
                 <div class="btn-group pull-right">
-                    <button  type="button" class="btn btn-primary" @click="showModal = true"> New Role</button>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-primary" @click="showModal = true"> New Role</button>
+                        <button type="button" class="btn btn-info" @click="changePermissionModal = true"> Change permission</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -16,27 +19,31 @@
 </template>
 
 <script>
-import RolePermission from './RolePermission'
-import RoleForm from './Form'
-import {EventBus} from "@/event-bus";
-export default {
-    name: "admin-page",
+    import RolePermission from './RolePermission'
+    import RoleForm from './Form'
+    import {EventBus} from "@/event-bus";
+
+    export default {
+        name: "admin-page",
         components: {
             RolePermission, RoleForm
         },
         data() {
             return {
-                showModal: false
+                showModal: false,
+                changePermissionModal: false
             }
         },
         mounted() {
-            EventBus.$on('modalClose', () => { this.showModal = false });
+            EventBus.$on('modalClose', () => {
+                this.showModal = false
+            });
         },
         beforeDestroy() {
             EventBus.$off('modalClose')
         }
 
-}
+    }
 </script>
 
 <style>

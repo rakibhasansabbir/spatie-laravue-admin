@@ -46,9 +46,12 @@
         <!-- <template v-else>
             <Loader></Loader>
         </template> -->
-                <role-form :role="editValue"
-            method="put"
-            v-show="showModal"></role-form>
+                <role-form
+                    :role="editValue"
+                    :permissions="permissions"
+                    method="put"
+                    v-show="showModal">
+                </role-form>
     </div>
 </template>
 
@@ -68,6 +71,7 @@ export default {
             loader: false,
             columns: RolePermissions.columns,
             roles: [],
+            permissions: [],
             webRoute: webRoute,
             showModal: false,
             editValue: {}
@@ -75,6 +79,7 @@ export default {
     },
     mounted(){
         this.fetchRolePermissions()
+        this.fetchPermissions()
         EventBus.$on('modalClose', () => { this.showModal = false });
         EventBus.$on('refresh', () => { this.fetchRolePermissions() });
 
@@ -90,6 +95,16 @@ export default {
                         }
                     })
             },
+        fetchPermissions() {
+            client.get(permissionRoute)
+                .then(response => {
+                    if (response.status === 200) {
+                        this.loader = false;
+                        this.permissions = response.data
+                        console.debug("permission : ", response)
+                    }
+                })
+        },
         deleteRole(role){
              alertify.confirm('Role delete', 'Are you sure?', () => {
                     client.delete(route + '/' + role.id)
