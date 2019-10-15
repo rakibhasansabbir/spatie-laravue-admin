@@ -36,6 +36,14 @@ class RoleRepository{
     public function update($id, $request)
     {
         $role = $this->model()::findOrFail($id);
+
+        $permissionIds = [];
+        if(count($request->permissions)){
+            foreach ($request->permissions as $key => $value) {
+                $permissionIds[$key] = $value->id;
+            }
+            $role->givePermissionTo( array_unique($permissionIds));
+        }
         return $role->update($request->except('permissions'));
     }
 
