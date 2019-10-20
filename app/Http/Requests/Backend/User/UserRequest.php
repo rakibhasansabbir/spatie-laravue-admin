@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Created by PhpStorm.
  * User: rakib
@@ -7,11 +6,10 @@
  * Time: 2:45 AM
  */
 
-namespace App\Http\Requests\Backend\Permission;
-
+namespace App\Http\Requests\Backend\Role;
 use Illuminate\Foundation\Http\FormRequest;
 
-class PermissionRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,6 +30,7 @@ class PermissionRequest extends FormRequest
     {
         $rules = [
             'name'  => 'required|max:190',
+            'email'  => 'required|email|max:190',
         ];
         return $rules;
     }

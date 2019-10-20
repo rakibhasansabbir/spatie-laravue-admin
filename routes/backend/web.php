@@ -5,3 +5,6 @@ Route::prefix('role')->group(function () {
 Route::prefix('permission')->group(function () {
     Route::get('','PermissionController@index')->name('backend.permission.index');
 });
+Route::prefix('user')->group(function () {
+    Route::get('','UserController@index')->name('backend.user.index');
+});

@@ -13,7 +13,7 @@ mix.webpackConfig({
         alias: {
             'vue$': 'vue/dist/vue.esm.js',
             '@': __dirname + '/resources/js',
-            '@comp': __dirname + '/resources/js/components',
+            '@comp': __dirname + '/resources/js/components/backend',
         },
     },
 });

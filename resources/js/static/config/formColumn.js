@@ -8,3 +8,8 @@ export const Permissions = {
         'Sl', 'Name','Guard name', 'Action'
     ]
 };
+export const Users = {
+    columns: [
+        'Sl', 'Name','email', 'Roles', 'Action'
+    ]
+};

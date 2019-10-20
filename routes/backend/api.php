@@ -11,3 +11,9 @@ Route::prefix('permission')->group(function () {
     Route::put('{roleID}', 'PermissionController@update')->name('backend.api.permission.update');
     Route::delete('{roleID}', 'PermissionController@destroy')->name('backend.api.permission.delete');
 });
+Route::prefix('user')->group(function () {
+    Route::get('', 'UserController@indexApi')->name('backend.api.user.index');
+    Route::post('', 'UserController@store')->name('backend.api.user.store');
+    Route::put('{userID}', 'UserController@update')->name('backend.api.user.update');
+    Route::delete('{userID}', 'UserController@destroy')->name('backend.api.user.delete');
+});

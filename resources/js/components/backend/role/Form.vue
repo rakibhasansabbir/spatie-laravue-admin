@@ -24,19 +24,15 @@
                          class="invalid-feedback">{{ errors.first('name') }}
                     </div>
                 </div>
-                <div class="form-group">
+                <div v-if="method === 'put' && typeof role.permissions !== 'undefined'" class="form-group">
                     <label>Søger</label>
-                    <multiselect
-                        v-model="role.permissions"
-                        :options="permissions"
-                        :multiple="true"
-                        :close-on-select="true"
-                        placeholder="Pick some"
-                        label="name"
-                        track-by="name">
-                    </multiselect>
-                    <div v-if="errors.first('permissions')"
-                         class="invalid-feedback">{{ errors.first('permissions') }}
+                    <select v-model="role.permissions" class="selectpicker form-control" multiple data-live-search="true">
+                        <template v-for="permission in permissions">
+                            <option :value="permission.id" >{{permission.name}}</option>
+                        </template>
+                    </select>
+                    <div v-if="errors.first('role_permission')"
+                         class="invalid-feedback">{{ errors.first('role_permission') }}
                     </div>
                 </div>
                 <hr>
@@ -64,7 +60,9 @@
             Modal
         },
         data() {
-            return {}
+            return {
+                permissions:[]
+            }
         },
         props: {
             method: {
@@ -78,25 +76,25 @@
                 default: () => {
                     return {}
                 }
-            },
-            permissions: {
-                type: Array,
-                required: false,
-                default: () => {
-                    return {}
-                }
             }
         },
         mounted() {
-            $(function () {
-                $('.selectpicker').selectpicker();
-            });
+            this.fetchPermissions()
         },
         methods: {
             formSubmit() {
                 if (this.method && this.method === 'put')
                     return this.editRole()
                 return this.storeRole()
+            },
+            fetchPermissions() {
+                client.get(permissionRoute)
+                    .then(response => {
+                        if (response.status === 200) {
+                            this.loader = false;
+                            this.permissions = response.data
+                        }
+                    })
             },
             storeRole() {
                 this.$validator.validateAll().then((result) => {
@@ -115,7 +113,6 @@
                 });
             },
             editRole() {
-                console.debug("called edit :", this.role)
                 this.$validator.validateAll().then((result) => {
                     if (result) {
                         client.put(route + '/' + this.role.id, this.role)

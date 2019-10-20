@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: rakib
@@ -10,18 +11,16 @@ namespace  App\Repository\Backend;
 
 
 use DB;
-use Illuminate\Support\Facades\Session;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
+use App\User;
 
-class RoleRepository{
+class UserRepository{
 
     public function model(){
-        return Role::class;
+        return User::class;
     }
 
     public function getAll(){
-        return $this->model()::with('permissions')->get();
+        return $this->model()::all();
     }
 
     public function store($request)

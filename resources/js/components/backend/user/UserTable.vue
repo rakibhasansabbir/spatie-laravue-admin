@@ -8,24 +8,20 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(role, index) in roles">
+                <tr v-for="(user, index) in users">
                     <td>{{ parseInt(index) + 1 }}</td>
-                    <td><a class="text-primary" :href="'role/' + role.id">{{ role.name }}</a></td>
-                    <td>{{ role.guard_name ? role.guard_name : '-' }}</td>
-                    <td>
-                        <template v-show="role.permissions" v-for="(permission, index) in role.permissions">
-                            <span class="badge badge-pill badge-info">{{permission.name}}</span>
-                        </template>
-                    </td>
+                    <td><a class="text-primary" :href="'user/' + user.id">{{ user.name }}</a></td>
+                    <td>{{ user.email ? user.email : '-' }}</td>
+                    <td>'-'</td>
                     <td>
                         <a href="#" class="mL-5 mR-5 text-primary"
-                               @click.prevent="showEditModal(role)"
+                               @click.prevent="showEditModal(user)"
                                data-toggle="tooltip"
                                title="Edit">
                                 <i class="ti-pencil-alt"></i></a>
                         <a href="#" class="mL-5 mR-5 text-danger"
                            data-toggle="tooltip"
-                           @click.prevent="deleteRole(role)"
+                           @click.prevent="deleteUser(user)"
                            title="Delete">
                             <i class="ti-trash"></i></a>
                     </td>
@@ -36,67 +32,59 @@
         <!-- <template v-else>
             <Loader></Loader>
         </template> -->
-        <role-form
-            :role="editValue"
-            method="put"
-            v-show="showModal">
-        </role-form>
+       <user-form :user="editValue" method="put" v-show="showModal"></user-form>
     </div>
 </template>
 
 <script>
 import client from '@/client'
 import alertify from 'alertifyjs'
-import RoleForm from './Form'
-import {RolePermissions} from "@/static/config/formColumn"
+import UserForm from './Form'
+import {Users} from "@/static/config/formColumn"
 import {EventBus} from "@/event-bus";
 export default {
-    name: "role-permission",
+    name: "permission-table",
         components: {
-            RoleForm
+            UserForm
     },
     data() {
         return {
             loader: false,
-            columns: RolePermissions.columns,
-            roles: [],
+            columns: Users.columns,
+            users: [],
             webRoute: webRoute,
             showModal: false,
             editValue: {}
         }
     },
     mounted(){
-        this.fetchRolePermissions()
+        this.fetchUsers()
         EventBus.$on('modalClose', () => { this.showModal = false });
-        EventBus.$on('refresh', () => { this.fetchRolePermissions() });
+        EventBus.$on('refresh', () => { this.fetchUsers() });
 
     },
     methods:{
-        fetchRolePermissions() {
+        fetchUsers() {
                 client.get(route)
                     .then(response => {
                         if (response.status === 200) {
                             this.loader = false;
-                            this.roles = response.data
+                            this.users = response.data
+                            console.debug("permission : ", response)
                         }
                     })
             },
-        deleteRole(role){
-             alertify.confirm('Role delete', 'Are you sure?', () => {
-                    client.delete(route + '/' + role.id)
+        deleteUser(user){
+             alertify.confirm('Permission delete', 'Are you sure?', () => {
+                    client.delete(route + '/' + user.id)
                         .then(response => {
                             alertify.success(response.data.message)
-                            this.fetchRolePermissions();
+                            this.fetchUsers();
                         })
             }, () => {});
         },
-        showEditModal(role) {
-            let temp = []
-            role.permissions.forEach(element => {
-                temp.push(element.id)
-            });
-            role.permissions = temp
-            this.editValue = role
+        showEditModal(permission) {
+            this.editValue = permission
             this.showModal = true
             this.method = 'put'
         },

@@ -3,7 +3,7 @@
         <template  v-slot:header>
             <h4 class="col-sm-6 c-grey-900 p-20">
                 <i class="c-blue-500 ti-user mR-15"></i>
-                Admin user form
+                Permission form
             </h4>
         </template>
         <template v-slot:body>
@@ -18,29 +18,10 @@
                            v-validate="'required'"
                            :class="{'is-invalid':errors.first('name')}"
                            name="name"
-                           v-model="admin.name"
+                           v-model="permission.name"
                            class="form-control" placeholder="Name">
                     <div v-if="errors.first('name')"
                          class="invalid-feedback">{{ errors.first('name') }}</div>
-                </div>
-                <div class="form-group">
-                    <label for="name"> Email </label>
-                    <input type="text"
-                           id="email"
-                           v-validate="'required'"
-                           :class="{'is-invalid':errors.first('email')}"
-                           name="email"
-                           v-model="admin.email"
-                           class="form-control" placeholder="Email">
-                    <div v-if="errors.first('email')"
-                         class="invalid-feedback">{{ errors.first('email') }}</div>
-                </div>
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input v-model="admin.is_active"
-                               class="form-check-input" type="checkbox">
-                        <b>Active product</b>
-                    </label>
                 </div>
                 <hr>
                 <div class="form-group">
@@ -61,7 +42,7 @@
     import client from '@/client'
     import {EventBus} from "@/event-bus"
     export default {
-        name: "admin-form",
+        name: "permission-form",
         components: {
             Modal
         },
@@ -75,7 +56,7 @@
                 required: false,
                 default: 'post'
             },
-            admin: {
+            permission: {
                 type: Object,
                 required: false,
                 default: () => { return {}}
@@ -84,13 +65,13 @@
         methods: {
             formSubmit(){
                 if (this.method && this.method === 'put')
-                    return this.editAdmin()
-                return this.storeAdmin()
+                    return this.editPermission()
+                return this.storePermission()
             },
-            storeAdmin() {
+            storePermission() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        client.post(route, this.admin)
+                        client.post(route, this.permission)
                             .then(response => {
                                 if (response.status >= 200 && response.status < 300) {
                                     EventBus.$emit('refresh')
@@ -103,10 +84,10 @@
                     alertify.warning('Correct above errors!')
                 });
             },
-            editAdmin() {
+            editPermission() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        client.put(route + '/' + this.admin.id, this.admin)
+                        client.put(route + '/' + this.permission.id, this.permission)
                             .then(response => {
                                 if (response.status === 422) {
                                     console.log(response)
