@@ -58,11 +58,7 @@
                     </li>
                     <li>
                         <a class='sidebar-link {{ request()->is('admins') ? 'highlight' : '' }}'
-                            href="#">Admins</a>
-                    </li>
-                    <li>
-                        <a class='sidebar-link {{ request()->is('config/settings') ? 'highlight' : '' }}'
-                            href="#">Settings</a>
+                            href="/user">Users</a>
                     </li>
                 </ul>
             </li>
