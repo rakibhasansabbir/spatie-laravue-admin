@@ -37,14 +37,14 @@
 </template>
 
 <script>
-    import Modal from '@comp/lib/Modal'
+    import modal from '@comp/lib/Modal'
     import alertify from 'alertifyjs'
     import client from '@/client'
     import {EventBus} from "@/event-bus"
     export default {
         name: "permission-form",
         components: {
-            Modal
+            modal
         },
         data() {
             return {

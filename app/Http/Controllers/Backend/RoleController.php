@@ -18,9 +18,6 @@ class RoleController extends Controller
     }
 
     public function index(){
-        // return $role =  Role::with('permissions')->where('id',4)->first();
-        //   $permissions = Permission::all();
-        //  return $role->syncPermissions($role->permissions);
         return view('backend.role.index');
     }
     public function indexApi(){

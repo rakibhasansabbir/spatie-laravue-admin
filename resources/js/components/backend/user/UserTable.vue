@@ -12,7 +12,11 @@
                     <td>{{ parseInt(index) + 1 }}</td>
                     <td><a class="text-primary" :href="'user/' + user.id">{{ user.name }}</a></td>
                     <td>{{ user.email ? user.email : '-' }}</td>
-                    <td>'-'</td>
+                    <td>
+                        <template v-show="user.roles" v-for="(role, index) in user.roles">
+                            <span class="badge badge-pill badge-info">{{role.name}}</span>
+                        </template>
+                    </td>
                     <td>
                         <a href="#" class="mL-5 mR-5 text-primary"
                                @click.prevent="showEditModal(user)"
@@ -68,9 +72,9 @@ export default {
                 client.get(route)
                     .then(response => {
                         if (response.status === 200) {
-                            this.loader = false;
+                            this.loader = false
                             this.users = response.data
-                            console.debug("permission : ", response)
+                            console.debug("users : ", this.users)
                         }
                     })
             },

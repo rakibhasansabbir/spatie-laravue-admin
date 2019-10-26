@@ -20,6 +20,7 @@ class UserRepository{
     }
 
     public function getAll(){
+        return $this->model()::with('roles')->get();
         return $this->model()::all();
     }
 
