@@ -36,7 +36,7 @@
         <!-- <template v-else>
             <Loader></Loader>
         </template> -->
-       <user-form :user="editValue" method="put" v-show="showModal"></user-form>
+       <user-form :data="editValue" method="put" v-show="showModal"></user-form>
     </div>
 </template>
 
@@ -87,8 +87,9 @@ export default {
                         })
             }, () => {});
         },
-        showEditModal(permission) {
-            this.editValue = permission
+        showEditModal(data) {
+            this.editValue = data
+            console.debug("data :",  this.editValue)
             this.showModal = true
             this.method = 'put'
         },

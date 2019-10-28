@@ -1,9 +1,9 @@
 <template>
     <modal :customClass="'sm'">
-        <template  v-slot:header>
+        <template v-slot:header>
             <h4 class="col-sm-6 c-grey-900 p-20">
                 <i class="c-blue-500 ti-user mR-15"></i>
-                Permission form
+                User form
             </h4>
         </template>
         <template v-slot:body>
@@ -18,10 +18,35 @@
                            v-validate="'required'"
                            :class="{'is-invalid':errors.first('name')}"
                            name="name"
-                           v-model="permission.name"
+                           v-model="data.name"
                            class="form-control" placeholder="Name">
                     <div v-if="errors.first('name')"
-                         class="invalid-feedback">{{ errors.first('name') }}</div>
+                         class="invalid-feedback">{{ errors.first('name') }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email"> Email </label>
+                    <input type="email"
+                           id="email"
+                           v-validate="'required'"
+                           :class="{'is-invalid':errors.first('email')}"
+                           name="email"
+                           v-model="data.email"
+                           class="form-control" placeholder="Email">
+                    <div v-if="errors.first('email')"
+                         class="invalid-feedback">{{ errors.first('email') }}
+                    </div>
+                </div>
+                <div v-if="method === 'put' && typeof data.roles !== 'undefined'" class="form-group">
+                    <label>Roles</label>
+                    <select v-model="data.roles" class="selectpicker form-control" multiple data-live-search="true" id="roles">
+                        <template v-for="role in roles">
+                            <option :value="role" >{{role.name}}</option>
+                        </template>
+                    </select>
+                    <div v-if="errors.first('roles')"
+                         class="invalid-feedback">{{ errors.first('roles') }}
+                    </div>
                 </div>
                 <hr>
                 <div class="form-group">
@@ -41,13 +66,15 @@
     import alertify from 'alertifyjs'
     import client from '@/client'
     import {EventBus} from "@/event-bus"
+
     export default {
-        name: "permission-form",
+        name: "data-form",
         components: {
             Modal
         },
         data() {
             return {
+                roles: []
             }
         },
         props: {
@@ -56,22 +83,27 @@
                 required: false,
                 default: 'post'
             },
-            permission: {
+            data: {
                 type: Object,
                 required: false,
-                default: () => { return {}}
+                default: () => {
+                    return {}
+                }
             }
         },
+        mounted(){
+            this.fetchRoles()
+        },
         methods: {
-            formSubmit(){
+            formSubmit() {
                 if (this.method && this.method === 'put')
-                    return this.editPermission()
-                return this.storePermission()
+                    return this.edit()
+                return this.store()
             },
-            storePermission() {
+            store() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        client.post(route, this.permission)
+                        client.post(route, this.data)
                             .then(response => {
                                 if (response.status >= 200 && response.status < 300) {
                                     EventBus.$emit('refresh')
@@ -84,10 +116,12 @@
                     alertify.warning('Correct above errors!')
                 });
             },
-            editPermission() {
+            edit() {
+                let editData = this.data
+                editData.roles = this.objectArrayToStringArray(editData.roles)
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        client.put(route + '/' + this.permission.id, this.permission)
+                        client.put(route + '/' + editData.id, editData)
                             .then(response => {
                                 if (response.status === 422) {
                                     console.log(response)
@@ -101,6 +135,21 @@
                         return;
                     }
                     alertify.warning('Correct above errors!')
+                });
+            },
+            fetchRoles() {
+                client.get(roleRoute)
+                    .then(response => {
+                        if (response.status === 200) {
+                            this.loader = false;
+                            this.roles = response.data
+                            console.debug("roles : ", this.roles)
+                        }
+                    })
+            },
+            objectArrayToStringArray(array){
+                return array.map(function(item) {
+                    return item['id'];
                 });
             }
         }

@@ -37,7 +37,7 @@
             <Loader></Loader>
         </template> -->
         <role-form
-            :role="editValue"
+            :data="editValue"
             method="put"
             v-show="showModal">
         </role-form>
@@ -91,11 +91,11 @@ export default {
             }, () => {});
         },
         showEditModal(role) {
-            let temp = []
-            role.permissions.forEach(element => {
-                temp.push(element.id)
-            });
-            role.permissions = temp
+            // let temp = []
+            // role.permissions.forEach(element => {
+            //     temp.push(element.id)
+            // });
+            // role.permissions = temp
             this.editValue = role
             this.showModal = true
             this.method = 'put'

@@ -18,21 +18,21 @@
                            v-validate="'required'"
                            :class="{'is-invalid':errors.first('name')}"
                            name="name"
-                           v-model="role.name"
+                           v-model="data.name"
                            class="form-control" placeholder="Name">
                     <div v-if="errors.first('name')"
                          class="invalid-feedback">{{ errors.first('name') }}
                     </div>
                 </div>
-                <div v-if="method === 'put' && typeof role.permissions !== 'undefined'" class="form-group">
+                <div v-if="method === 'put' && typeof data.permissions !== 'undefined'" class="form-group">
                     <label>Søger</label>
-                    <select v-model="role.permissions" class="selectpicker form-control" multiple data-live-search="true">
+                    <select v-model="data.permissions" class="selectpicker form-control" multiple data-live-search="true">
                         <template v-for="permission in permissions">
-                            <option :value="permission.id" >{{permission.name}}</option>
+                            <option :value="permission" >{{permission.name}}</option>
                         </template>
                     </select>
-                    <div v-if="errors.first('role_permission')"
-                         class="invalid-feedback">{{ errors.first('role_permission') }}
+                    <div v-if="errors.first('data_permission')"
+                         class="invalid-feedback">{{ errors.first('data_permission') }}
                     </div>
                 </div>
                 <hr>
@@ -55,7 +55,7 @@
     import {EventBus} from "@/event-bus"
 
     export default {
-        name: "role-form",
+        name: "data-form",
         components: {
             Modal
         },
@@ -70,7 +70,7 @@
                 required: false,
                 default: 'post'
             },
-            role: {
+            data: {
                 type: Object,
                 required: false,
                 default: () => {
@@ -84,8 +84,8 @@
         methods: {
             formSubmit() {
                 if (this.method && this.method === 'put')
-                    return this.editRole()
-                return this.storeRole()
+                    return this.edit()
+                return this.store()
             },
             fetchPermissions() {
                 client.get(permissionRoute)
@@ -96,10 +96,10 @@
                         }
                     })
             },
-            storeRole() {
+            store() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        client.post(route, this.role)
+                        client.post(route, this.data)
                             .then(response => {
                                 if (response.status >= 200 && response.status < 300) {
                                     EventBus.$emit('refresh')
@@ -112,10 +112,12 @@
                     alertify.warning('Correct above errors!')
                 });
             },
-            editRole() {
+            edit() {
+                let editData = this.data
+                editData.permissions = this.objectArrayToStringArray(editData.permissions)
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        client.put(route + '/' + this.role.id, this.role)
+                        client.put(route + '/' + editData.id, editData)
                             .then(response => {
                                 if (response.status === 422) {
                                     console.log(response)
@@ -129,6 +131,11 @@
                         return;
                     }
                     alertify.warning('Correct above errors!')
+                });
+            },
+            objectArrayToStringArray(array){
+                return array.map(function(item) {
+                    return item['id'];
                 });
             }
         }

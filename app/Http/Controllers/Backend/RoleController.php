@@ -23,6 +23,9 @@ class RoleController extends Controller
     public function indexApi(){
         return response()->json($this->repository->getAll());
     }
+    public function list(){
+        return response()->json($this->repository->getList());
+    }
     public function store(UserRequest $request){
         if ($role = $this->repository->store($request)) {
             return response()->json([

@@ -21,7 +21,17 @@ class RoleRepository{
     }
 
     public function getAll(){
-        return $this->model()::with('permissions')->get();
+        $data = $this->model()::with('permissions')->get();
+        foreach ($data as $d) {
+            foreach ($d->permissions as $permission) {
+                unset($permission['pivot']);
+            }
+        }
+        return $data;
+    }
+
+    public function getList(){
+        return $this->model()::all();
     }
 
     public function store($request)

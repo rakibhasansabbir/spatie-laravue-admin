@@ -7,40 +7,44 @@
  * Time: 2:31 AM
  */
 
-namespace  App\Repository\Backend;
+namespace App\Repository\Backend;
 
 
 use DB;
 use App\User;
 
-class UserRepository{
+class UserRepository
+{
 
-    public function model(){
+    public function model()
+    {
         return User::class;
     }
 
-    public function getAll(){
-        return $this->model()::with('roles')->get();
-        return $this->model()::all();
+    public function getAll()
+    {
+        $data = $this->model()::with('roles')->get();
+        foreach ($data as $d) {
+            foreach ($d->roles as $role) {
+                unset($role['pivot']);
+            }
+        }
+        return $data;
     }
 
     public function store($request)
     {
-        $role = $this->model()::create([
-            'name' => $request->name,
-        ]);
-        // auth()->user()->assignRole($role);
-        return $role;
+        //
     }
 
     public function update($id, $request)
     {
         DB::beginTransaction();
-        $role = $this->model()::with('permissions')->where('id',$id)->first();
-        $role->name = $request->name;
-        $role->save();
-        if($request->filled('permissions')){
-            $role->syncPermissions($request->permissions);
+        $data = $this->model()::with('roles')->where('id', $id)->first();
+        $data->name = $request->name;
+        $data->save();
+        if ($request->filled('roles')) {
+            $data->syncRoles($request->roles);
         }
         DB::commit();
         return true;
@@ -48,14 +52,13 @@ class UserRepository{
 
     public function delete($id)
     {
-        $role = $this->model()::findOrFail($id);
+        $data = $this->model()::findOrFail($id);
 
-        return DB::transaction(function () use ($role) {
-            $role->delete();
+        return DB::transaction(function () use ($data) {
+            $data->delete();
             return true;
         });
     }
-
 
 
 }
