@@ -24,6 +24,8 @@ class UserRepository
     public function getAll()
     {
         $data = $this->model()::with('roles')->get();
+
+        //remove pivot attribute
         foreach ($data as $d) {
             foreach ($d->roles as $role) {
                 unset($role['pivot']);

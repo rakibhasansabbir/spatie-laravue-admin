@@ -22,6 +22,8 @@ class RoleRepository{
 
     public function getAll(){
         $data = $this->model()::with('permissions')->get();
+
+        //remove pivot attribute
         foreach ($data as $d) {
             foreach ($d->permissions as $permission) {
                 unset($permission['pivot']);
