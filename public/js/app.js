@@ -6149,6 +6149,7 @@ __webpack_require__.r(__webpack_exports__);
     store: function store() {
       var _this2 = this;
 
+      console.log("called store");
       this.$validator.validateAll().then(function (result) {
         if (result) {
           _client__WEBPACK_IMPORTED_MODULE_2__["default"].post(route, _this2.data).then(function (response) {
@@ -6337,9 +6338,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _RolePermission__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RolePermission */ "./resources/js/components/backend/role/RolePermission.vue");
 /* harmony import */ var _Form__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Form */ "./resources/js/components/backend/role/Form.vue");
 /* harmony import */ var _event_bus__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/event-bus */ "./resources/js/event-bus.js");
-//
-//
-//
 //
 //
 //
@@ -55753,40 +55751,17 @@ var render = function() {
         _c("div", { staticClass: "col-sm-6" }, [
           _c("div", { staticClass: "btn-group pull-right" }, [
             _c(
-              "div",
+              "button",
               {
-                staticClass: "btn-group",
-                attrs: { role: "group", "aria-label": "Basic example" }
+                staticClass: "btn btn-primary",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    _vm.showModal = true
+                  }
+                }
               },
-              [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-primary",
-                    attrs: { type: "button" },
-                    on: {
-                      click: function($event) {
-                        _vm.showModal = true
-                      }
-                    }
-                  },
-                  [_vm._v(" New Role")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-info",
-                    attrs: { type: "button" },
-                    on: {
-                      click: function($event) {
-                        _vm.changePermissionModal = true
-                      }
-                    }
-                  },
-                  [_vm._v(" Change permission")]
-                )
-              ]
+              [_vm._v(" New Role")]
             )
           ])
         ])

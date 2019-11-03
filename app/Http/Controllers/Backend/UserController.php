@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Backend\Role\UserRequest;
+use App\Http\Requests\Backend\User\UserRequest;
 use App\Repository\Backend\UserRepository;
 use App\User;
 use Illuminate\Http\Response;
@@ -34,7 +34,7 @@ class UserController extends Controller
     {
         if ($role = $this->repository->store($request)) {
             return response()->json([
-                'message' => 'User created successfully',
+                'message' => 'User created successfully(default password "secret"',
                 'data' => $role
             ], Response::HTTP_OK);
         }

@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Backend\Role\UserRequest;
+use App\Http\Requests\Backend\Role\RoleRequest;
 use App\Repository\Backend\RoleRepository;
 use Illuminate\Http\Response;
-use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
@@ -26,7 +24,7 @@ class RoleController extends Controller
     public function list(){
         return response()->json($this->repository->getList());
     }
-    public function store(UserRequest $request){
+    public function store(RoleRequest $request){
         if ($role = $this->repository->store($request)) {
             return response()->json([
                 'message' => 'Role created successfully',

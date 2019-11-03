@@ -6,7 +6,7 @@
  * Time: 2:45 AM
  */
 
-namespace App\Http\Requests\Backend\Role;
+namespace App\Http\Requests\Backend\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest

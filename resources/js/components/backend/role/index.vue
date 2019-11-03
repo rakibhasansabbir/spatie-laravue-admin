@@ -6,10 +6,7 @@
             </h4>
             <div class="col-sm-6">
                 <div class="btn-group pull-right">
-                    <div class="btn-group" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-primary" @click="showModal = true"> New Role</button>
-                        <button type="button" class="btn btn-info" @click="changePermissionModal = true"> Change permission</button>
-                    </div>
+                    <button type="button" class="btn btn-primary" @click="showModal = true"> New Role</button>
                 </div>
             </div>
         </div>

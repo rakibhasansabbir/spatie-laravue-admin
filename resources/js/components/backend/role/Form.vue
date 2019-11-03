@@ -97,6 +97,7 @@
                     })
             },
             store() {
+                console.log("called store")
                 this.$validator.validateAll().then((result) => {
                     if (result) {
                         client.post(route, this.data)

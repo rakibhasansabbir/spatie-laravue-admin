@@ -12,6 +12,7 @@ namespace App\Repository\Backend;
 
 use DB;
 use App\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserRepository
 {
@@ -36,7 +37,12 @@ class UserRepository
 
     public function store($request)
     {
-        //
+        $user = $this->model()::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make('secret'),
+        ]);
+        return $user;
     }
 
     public function update($id, $request)
